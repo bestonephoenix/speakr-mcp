@@ -1,0 +1,17 @@
+{
+  "name": "speakr-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP sidecar for Speakr — native MCP over Streamable HTTP, runs beside the Speakr container",
+  "main": "entrypoint.mjs",
+  "scripts": {
+    "start": "node entrypoint.mjs"
+  },
+  "dependencies": {
+    "@ivotoby/openapi-mcp-server": "^1.16.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

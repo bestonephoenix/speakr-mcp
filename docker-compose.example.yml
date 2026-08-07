@@ -1,0 +1,44 @@
+# speakr-mcp — MCP sidecar for Speakr
+#
+# Runs beside the Speakr container on the same Docker network, so the API is
+# reached internally (no SSO / Pangolin round-trip, no open internet).
+#
+# Build from source:
+#   docker build -t speakr-mcp .
+# Or pull from GHCR (if the workflow has published):
+#   docker pull ghcr.io/bestonephoenix/speakr-mcp:latest
+#
+# Example:
+#   docker run -d --name speakr-mcp \
+#     --network <speakr's docker network> \
+#     -e SPEAKR_API_URL="http://speakr:8000/api/v1/" \
+#     -e SPEAKR_TOKEN="your-token" \
+#     -p 3000:3000 \
+#     speakr-mcp
+services:
+  speakr-mcp:
+    image: ghcr.io/bestonephoenix/speakr-mcp:latest
+    # build: .   # uncomment to build from source instead of pulling
+    container_name: speakr-mcp
+    restart: unless-stopped
+    environment:
+      # Internal address of the Speakr API *as seen from this container*.
+      # IMPORTANT: use the container/service name + internal port, NOT the
+      # public hostname — that's the whole point of the sidecar.
+      SPEAKR_API_URL: "http://speakr:8000/api/v1/"
+      # Your Speakr API token (create in Speakr → Account → API Tokens).
+      # Keep in .env or your secrets manager, not committed.
+      SPEAKR_TOKEN: "${SPEAKR_TOKEN}"
+      MCP_PORT: "3000"
+      # MCP_HOST: "0.0.0.0"   # default; bind as needed
+    ports:
+      - "3000:3000"
+    # Attach to the network your Speakr container is on. Replace with the
+    # real network name (check: docker network ls; docker inspect speakr).
+    # If Speakr is in this same compose file, drop `external: true`.
+    networks:
+      - speakr-net
+
+networks:
+  speakr-net:
+    external: true
