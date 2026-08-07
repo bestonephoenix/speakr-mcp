@@ -55,6 +55,15 @@ networks:
 
 > Find the right values: `docker ps` for the Speakr container name, `docker inspect <speakr> --format '{{json .NetworkSettings.Networks}}'` for its network, and the internal port from the image's `EXPOSE` or compose file.
 
+**Secrets go in `.env`, never in the compose file or code.** The compose file references `${SPEAKR_TOKEN}` which Docker Compose resolves from your local `.env`:
+
+```bash
+cp .env.example .env     # then edit .env and set SPEAKR_TOKEN (and SPEAKR_API_URL if needed)
+docker compose up -d
+```
+
+`.env` is gitignored, so the token never lands in the repo.
+
 ### Build from source
 
 ```bash
