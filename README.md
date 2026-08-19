@@ -97,6 +97,7 @@ Then `/reload-mcp` — tools appear as `mcp_speakr_*` (e.g. `mcp_speakr_get_reco
   "type": "streamable_http",
   "url": "http://speakr-mcp:3000/mcp"
 }
+```
 
 ### Any MCP client
 
