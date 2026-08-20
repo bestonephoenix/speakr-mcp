@@ -9,7 +9,8 @@
     "start": "node entrypoint.mjs"
   },
   "dependencies": {
-    "@ivotoby/openapi-mcp-server": "^1.16.1"
+    "@ivotoby/openapi-mcp-server": "^1.16.1",
+    "@modelcontextprotocol/sdk": "^1.30.0"
   },
   "engines": {
     "node": ">=20"

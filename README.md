@@ -143,7 +143,7 @@ SPEAKR_API_URL=http://speakr:8000/api/v1/ SPEAKR_TOKEN=... npm start
 
 ## Notes / limitations
 
-- The `--headers` CLI flag of the upstream server drops auth headers — the entrypoint therefore passes the token via the `API_HEADERS` env var, which works.
+- The MCP server uses the **official MCP SDK StreamableHTTP transport** (`enableJsonResponse`), which answers synchronous requests (`ping`, `tools/list`, fast tool calls) with HTTP 200 + JSON body. This is required for Hermes' keepalive: the ivotoby package's own transport answers non-list requests with 202 Accepted (response deferred to SSE), which Hermes' client treats as a failed request, causing reconnect loops.
 - Speakr's spec ships without `operationId`s; the entrypoint patches them at runtime (the same fix that makes tool names unique).
 - Multipart file upload tools may be imperfect via the auto-converter — reads (list/get/transcript/summary/chat) are rock solid.
 
